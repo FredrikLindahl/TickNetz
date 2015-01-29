@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3b56c821ea094fafaf491d43d34ec6e1" Name="Diagram1">
+        <EntityTypeShape EntityType="EventBookingModel.Booking" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventBookingModel.Customer" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventBookingModel.Event" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventBookingModel.EventTicket" Width="1.5" PointX="5.25" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventBookingModel.Venue" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <AssociationConnector Association="EventBookingModel.BOOKINGNBR_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="EventBookingModel.CUSTOMERNBR_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="EventBookingModel.EVENTNAME_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="EventBookingModel.VENUENAME_FK" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EventBookingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="bookingNbr" />
+          </Key>
+          <Property Name="bookingNbr" Type="int" Nullable="false" />
+          <Property Name="bookingDate" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="customerNbr" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="customerNbr" />
+          </Key>
+          <Property Name="customerNbr" Type="int" Nullable="false" />
+          <Property Name="customerName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="phoneNbr" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="eventName" />
+          </Key>
+          <Property Name="eventName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="eventDate" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="baseTicketPrice" Type="float" Nullable="false" />
+          <Property Name="venueName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventTicket">
+          <Key>
+            <PropertyRef Name="seatNbr" />
+            <PropertyRef Name="eventName" />
+          </Key>
+          <Property Name="seatNbr" Type="int" Nullable="false" />
+          <Property Name="eventName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ticketHolderName" Type="varchar" MaxLength="50" />
+          <Property Name="bookingNbr" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Venue">
+          <Key>
+            <PropertyRef Name="venueName" />
+          </Key>
+          <Property Name="venueName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="seatCapacity" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="BOOKINGNBR_FK">
+          <End Role="Booking" Type="Self.Booking" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EventTicket" Type="Self.EventTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Booking">
+              <PropertyRef Name="bookingNbr" />
+            </Principal>
+            <Dependent Role="EventTicket">
+              <PropertyRef Name="bookingNbr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CUSTOMERNBR_FK">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customerNbr" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="customerNbr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EVENTNAME_FK">
+          <End Role="Event" Type="Self.Event" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EventTicket" Type="Self.EventTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="eventName" />
+            </Principal>
+            <Dependent Role="EventTicket">
+              <PropertyRef Name="eventName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VENUENAME_FK">
+          <End Role="Venue" Type="Self.Venue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venue">
+              <PropertyRef Name="venueName" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="venueName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EventBookingModelStoreContainer">
+          <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventTicket" EntityType="Self.EventTicket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Venue" EntityType="Self.Venue" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="BOOKINGNBR_FK" Association="Self.BOOKINGNBR_FK">
+            <End Role="Booking" EntitySet="Booking" />
+            <End Role="EventTicket" EntitySet="EventTicket" />
+          </AssociationSet>
+          <AssociationSet Name="CUSTOMERNBR_FK" Association="Self.CUSTOMERNBR_FK">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="EVENTNAME_FK" Association="Self.EVENTNAME_FK">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="EventTicket" EntitySet="EventTicket" />
+          </AssociationSet>
+          <AssociationSet Name="VENUENAME_FK" Association="Self.VENUENAME_FK">
+            <End Role="Venue" EntitySet="Venue" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EventBookingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="bookingNbr" />
+          </Key>
+          <Property Name="bookingNbr" Type="Int32" Nullable="false" />
+          <Property Name="bookingDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="customerNbr" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EventTicket" Relationship="Self.BOOKINGNBR_FK" FromRole="Booking" ToRole="EventTicket" />
+          <NavigationProperty Name="Customer" Relationship="Self.CUSTOMERNBR_FK" FromRole="Booking" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="customerNbr" />
+          </Key>
+          <Property Name="customerNbr" Type="Int32" Nullable="false" />
+          <Property Name="customerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phoneNbr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Booking" Relationship="Self.CUSTOMERNBR_FK" FromRole="Customer" ToRole="Booking" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="eventName" />
+          </Key>
+          <Property Name="eventName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="eventDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="baseTicketPrice" Type="Double" Nullable="false" />
+          <Property Name="venueName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="EventTicket" Relationship="Self.EVENTNAME_FK" FromRole="Event" ToRole="EventTicket" />
+          <NavigationProperty Name="Venue" Relationship="Self.VENUENAME_FK" FromRole="Event" ToRole="Venue" />
+        </EntityType>
+        <EntityType Name="EventTicket">
+          <Key>
+            <PropertyRef Name="seatNbr" />
+            <PropertyRef Name="eventName" />
+          </Key>
+          <Property Name="seatNbr" Type="Int32" Nullable="false" />
+          <Property Name="eventName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ticketHolderName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="bookingNbr" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Booking" Relationship="Self.BOOKINGNBR_FK" FromRole="EventTicket" ToRole="Booking" />
+          <NavigationProperty Name="Event" Relationship="Self.EVENTNAME_FK" FromRole="EventTicket" ToRole="Event" />
+        </EntityType>
+        <EntityType Name="Venue">
+          <Key>
+            <PropertyRef Name="venueName" />
+          </Key>
+          <Property Name="venueName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="seatCapacity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Event" Relationship="Self.VENUENAME_FK" FromRole="Venue" ToRole="Event" />
+        </EntityType>
+        <Association Name="BOOKINGNBR_FK">
+          <End Role="Booking" Type="Self.Booking" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EventTicket" Type="Self.EventTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Booking">
+              <PropertyRef Name="bookingNbr" />
+            </Principal>
+            <Dependent Role="EventTicket">
+              <PropertyRef Name="bookingNbr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CUSTOMERNBR_FK">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customerNbr" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="customerNbr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EVENTNAME_FK">
+          <End Role="Event" Type="Self.Event" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EventTicket" Type="Self.EventTicket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="eventName" />
+            </Principal>
+            <Dependent Role="EventTicket">
+              <PropertyRef Name="eventName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VENUENAME_FK">
+          <End Role="Venue" Type="Self.Venue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venue">
+              <PropertyRef Name="venueName" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="venueName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EventBookingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Booking" EntityType="Self.Booking" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" />
+          <EntitySet Name="Event" EntityType="Self.Event" />
+          <EntitySet Name="EventTicket" EntityType="Self.EventTicket" />
+          <EntitySet Name="Venue" EntityType="Self.Venue" />
+          <AssociationSet Name="BOOKINGNBR_FK" Association="Self.BOOKINGNBR_FK">
+            <End Role="Booking" EntitySet="Booking" />
+            <End Role="EventTicket" EntitySet="EventTicket" />
+          </AssociationSet>
+          <AssociationSet Name="CUSTOMERNBR_FK" Association="Self.CUSTOMERNBR_FK">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="EVENTNAME_FK" Association="Self.EVENTNAME_FK">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="EventTicket" EntitySet="EventTicket" />
+          </AssociationSet>
+          <AssociationSet Name="VENUENAME_FK" Association="Self.VENUENAME_FK">
+            <End Role="Venue" EntitySet="Venue" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EventBookingModelStoreContainer" CdmEntityContainer="EventBookingEntities">
+          <EntitySetMapping Name="Booking">
+            <EntityTypeMapping TypeName="EventBookingModel.Booking">
+              <MappingFragment StoreEntitySet="Booking">
+                <ScalarProperty Name="bookingNbr" ColumnName="bookingNbr" />
+                <ScalarProperty Name="bookingDate" ColumnName="bookingDate" />
+                <ScalarProperty Name="customerNbr" ColumnName="customerNbr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customer">
+            <EntityTypeMapping TypeName="EventBookingModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="customerNbr" ColumnName="customerNbr" />
+                <ScalarProperty Name="customerName" ColumnName="customerName" />
+                <ScalarProperty Name="phoneNbr" ColumnName="phoneNbr" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="address" ColumnName="address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Event">
+            <EntityTypeMapping TypeName="EventBookingModel.Event">
+              <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="eventName" ColumnName="eventName" />
+                <ScalarProperty Name="eventDate" ColumnName="eventDate" />
+                <ScalarProperty Name="baseTicketPrice" ColumnName="baseTicketPrice" />
+                <ScalarProperty Name="venueName" ColumnName="venueName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventTicket">
+            <EntityTypeMapping TypeName="EventBookingModel.EventTicket">
+              <MappingFragment StoreEntitySet="EventTicket">
+                <ScalarProperty Name="seatNbr" ColumnName="seatNbr" />
+                <ScalarProperty Name="eventName" ColumnName="eventName" />
+                <ScalarProperty Name="ticketHolderName" ColumnName="ticketHolderName" />
+                <ScalarProperty Name="bookingNbr" ColumnName="bookingNbr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Venue">
+            <EntityTypeMapping TypeName="EventBookingModel.Venue">
+              <MappingFragment StoreEntitySet="Venue">
+                <ScalarProperty Name="venueName" ColumnName="venueName" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="seatCapacity" ColumnName="seatCapacity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
